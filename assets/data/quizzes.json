@@ -1,0 +1,45 @@
+[
+  {
+    "id": "q1",
+    "title": "Alphabet Mastery - Level 1",
+    "description": "Test your knowledge of the first 7 Arabic letters.",
+    "questions": [
+      {
+        "id": "1",
+        "questionText": "Which letter is this: ا",
+        "options": ["Alif", "Ba", "Ta", "Tha"],
+        "correctAnswerIndex": 0,
+        "type": "textToText"
+      },
+      {
+        "id": "2",
+        "questionText": "Select the correct letter for the sound 'Ba'",
+        "options": ["ت", "ب", "ث", "ا"],
+        "correctAnswerIndex": 1,
+        "type": "textToText"
+      },
+      {
+        "id": "3",
+        "questionText": "Identify the letter you hear",
+        "audioPath": "assets/audio/ta.mp3",
+        "options": ["ب", "ت", "ث", "ج"],
+        "correctAnswerIndex": 1,
+        "type": "audioToText"
+      }
+    ]
+  },
+  {
+    "id": "q2",
+    "title": "Harakat Basics",
+    "description": "Challenge yourself with Fatha, Kasra, and Damma.",
+    "questions": [
+      {
+        "id": "4",
+        "questionText": "Which harakah represents the 'a' sound above the letter?",
+        "options": ["Kasra", "Damma", "Fatha", "Sukun"],
+        "correctAnswerIndex": 2,
+        "type": "textToText"
+      }
+    ]
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "title": "Huroof al-Mufradah (Individual Letters)",
+    "description": "Introduction to the Arabic alphabet. Focus on the correct pronunciation of each letter from its origin (Makhraj).",
+    "examples": [
+      {"word": "ا", "audio": "alif.mp3"},
+      {"word": "ب", "audio": "ba.mp3"},
+      {"word": "ت", "audio": "ta.mp3"}
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Harakat: Fatha (Short 'a' Sound)",
+    "description": "Fatha is a short diagonal line above the letter. It produces a short 'a' sound.",
+    "examples": [
+      {"word": "كَتَبَ", "audio": "kataba.mp3"},
+      {"word": "قَرَأَ", "audio": "qaraa.mp3"},
+      {"word": "ذَهَبَ", "audio": "zahaba.mp3"}
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Harakat: Kasra (Short 'i' Sound)",
+    "description": "Kasra is a short diagonal line below the letter. It produces a short 'i' sound.",
+    "examples": [
+      {"word": "شَرِبَ", "audio": "shariba.mp3"},
+      {"word": "حَمِدَ", "audio": "hamida.mp3"},
+      {"word": "سَمِعَ", "audio": "samia.mp3"}
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Harakat: Damma (Short 'u' Sound)",
+    "description": "Damma is a small 'waw' shape above the letter. It produces a short 'u' sound.",
+    "examples": [
+      {"word": "خُلِقَ", "audio": "khuliqa.mp3"},
+      {"word": "رُزِقَ", "audio": "ruziqa.mp3"},
+      {"word": "قُتِلَ", "audio": "qutila.mp3"}
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Tanween: Double Fatha",
+    "description": "Two fatha lines above the letter, producing an 'an' sound.",
+    "examples": [
+      {"word": "كِتَابًا", "audio": "kitaban.mp3"},
+      {"word": "بَيْتًا", "audio": "baytan.mp3"}
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Tanween: Double Kasra",
+    "description": "Two kasra lines below the letter, producing an 'in' sound.",
+    "examples": [
+      {"word": "كِتَابٍ", "audio": "kitabin.mp3"},
+      {"word": "بَيْتٍ", "audio": "baytin.mp3"}
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Tanween: Double Damma",
+    "description": "Two damma shapes above the letter, producing an 'un' sound.",
+    "examples": [
+      {"word": "كِتَابٌ", "audio": "kitabun.mp3"},
+      {"word": "بَيْتٌ", "audio": "baytun.mp3"}
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Madd: Alif, Waw, Ya",
+    "description": "Long vowels that extend the sound of the previous harakah.",
+    "examples": [
+      {"word": "قَالَ", "audio": "qala.mp3"},
+      {"word": "يَقُولُ", "audio": "yaqulu.mp3"},
+      {"word": "قِيلَ", "audio": "qila.mp3"}
+    ]
+  }
+]

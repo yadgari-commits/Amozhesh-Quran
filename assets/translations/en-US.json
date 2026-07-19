@@ -1,0 +1,18 @@
+{
+  "app_name": "Quran Learning App",
+  "welcome": "Welcome back!",
+  "home": "Home",
+  "alphabet": "Alphabet",
+  "qaida": "Baghdadi Qaida",
+  "quran": "Holy Quran",
+  "quizzes": "Quizzes",
+  "profile": "Profile",
+  "start_learning": "Start Learning",
+  "daily_goal": "Daily Goal",
+  "completed": "Completed",
+  "search_surah": "Search Surah...",
+  "no_results": "No results found",
+  "verses": "verses",
+  "resume": "Resume",
+  "continue_reading": "Continue Reading"
+}

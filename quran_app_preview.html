@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اپلیکیشن آموزش قرآن کریم - پیش‌نمایش تعاملی</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f8f9fa;
+            user-select: none;
+        }
+        .quran-text {
+            font-family: 'Amiri', serif;
+        }
+        .bg-islamic-green { background-color: #006432; }
+        .text-islamic-green { color: #006432; }
+        .bg-gold { background-color: #D4AF37; }
+        .text-gold { color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+        
+        .nav-item.active {
+            color: #006432;
+            font-weight: bold;
+        }
+        .nav-item.active i {
+            transform: scale(1.2);
+        }
+        
+        /* Custom Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .app-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Icons as simple SVG components
+        const Icon = ({ name, className = "w-6 h-6" }) => {
+            const icons = {
+                home: <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />,
+                book: <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />,
+                alphabet: <path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c1.383 4.588 3.595 8.821 6.412 12.5" />,
+                mic: <path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />,
+                profile: <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />,
+                chevron: <path d="M9 5l7 7-7 7" />
+            };
+            return (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className={className}>
+                    {icons[name]}
+                </svg>
+            );
+        };
+
+        const Dashboard = ({ onNavigate }) => (
+            <div className="p-6 animate-fade-in">
+                <h1 className="text-2xl font-bold mb-2">سلام، خوش آمدید</h1>
+                <p className="text-gray-500 mb-6">امروز آماده یادگیری قرآن هستید؟</p>
+                
+                <div className="bg-islamic-green rounded-2xl p-5 text-white shadow-lg mb-8">
+                    <div className="flex justify-between items-center mb-4">
+                        <span className="text-sm opacity-80">هدف روزانه شما</span>
+                        <span className="text-gold font-bold">۳۵٪ تکمیل شده</span>
+                    </div>
+                    <div className="w-full bg-white/20 rounded-full h-2 mb-4">
+                        <div className="bg-gold h-2 rounded-full" style={{width: '35%'}}></div>
+                    </div>
+                    <p className="text-xs opacity-70">تا الان ۲ درس از ۵ درس امروز را تمام کرده‌اید.</p>
+                </div>
+
+                <div className="space-y-4">
+                    <h2 className="text-lg font-bold">بخش‌های اصلی</h2>
+                    {[
+                        { id: 'alphabet', title: 'آموزش الفبا', sub: 'یادگیری تلفظ صحیح حروف', icon: 'alphabet', color: 'bg-green-50' },
+                        { id: 'qaida', title: 'قاعده بغدادی', sub: 'قوانین روان‌خوانی قدم به قدم', icon: 'book', color: 'bg-orange-50' },
+                        { id: 'quran', title: 'مصحف شریف', sub: 'تلاوت و مشاهده آیات', icon: 'book', color: 'bg-blue-50' },
+                        { id: 'ai', title: 'معلم هوشمند', sub: 'تحلیل قرائت شما با هوش مصنوعی', icon: 'mic', color: 'bg-purple-50' }
+                    ].map(item => (
+                        <div key={item.id} onClick={() => onNavigate(item.id)} className={`${item.color} p-4 rounded-xl flex items-center cursor-pointer active:scale-95 transition-transform border border-transparent hover:border-islamic-green/20`}>
+                            <div className="bg-white p-3 rounded-lg shadow-sm mr-4 ml-4">
+                                <Icon name={item.icon} className="w-6 h-6 text-islamic-green" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="font-bold text-gray-800">{item.title}</h3>
+                                <p className="text-xs text-gray-500">{item.sub}</p>
+                            </div>
+                            <Icon name="chevron" className="w-4 h-4 text-gray-400" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+
+        const Alphabet = () => {
+            const letters = [
+                'ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'ل', 'م', 'ن', 'و', 'ه', 'ی'
+            ];
+            const [selected, setSelected] = useState(null);
+
+            return (
+                <div className="p-6 animate-fade-in">
+                    <div className="flex items-center mb-6">
+                        <h1 className="text-xl font-bold">آموزش حروف الفبا</h1>
+                    </div>
+                    <div className="grid grid-cols-4 gap-4">
+                        {letters.map((char, index) => (
+                            <div 
+                                key={index} 
+                                onClick={() => setSelected(index)}
+                                className={`h-20 flex items-center justify-center rounded-2xl text-3xl quran-text transition-all cursor-pointer ${selected === index ? 'bg-gold text-white shadow-lg scale-110' : 'bg-white border border-gray-100 shadow-sm text-islamic-green'}`}
+                            >
+                                {char}
+                            </div>
+                        ))}
+                    </div>
+                    {selected !== null && (
+                        <div className="mt-8 p-4 bg-green-50 rounded-xl border border-islamic-green/20 animate-fade-in">
+                            <p className="text-sm text-gray-600 mb-2">تلفظ حرف:</p>
+                            <div className="flex items-center justify-between">
+                                <span className="text-4xl quran-text text-islamic-green">{letters[selected]}</span>
+                                <button className="bg-islamic-green text-white px-6 py-2 rounded-lg text-sm flex items-center">
+                                    <Icon name="mic" className="w-4 h-4 ml-2" />
+                                    پخش صـوت
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const QuranViewer = () => {
+            const surahs = [
+                { id: 1, name: 'الفاتحة', meaning: 'گشایش', verses: 7 },
+                { id: 112, name: 'الإخلاص', meaning: 'یکتاپرستی', verses: 4 },
+                { id: 113, name: 'الفلق', meaning: 'سپیده‌دم', verses: 5 },
+                { id: 114, name: 'الناس', meaning: 'مردم', verses: 6 }
+            ];
+
+            return (
+                <div className="p-6 animate-fade-in">
+                    <h1 className="text-xl font-bold mb-6">لیست سوره‌ها</h1>
+                    <div className="space-y-3">
+                        {surahs.map(s => (
+                            <div key={s.id} className="bg-white p-4 rounded-xl border border-gray-100 flex items-center shadow-sm cursor-pointer hover:bg-green-50/50">
+                                <div className="w-10 h-10 rounded-full border border-gold flex items-center justify-center text-xs font-bold text-gold ml-4">
+                                    {s.id}
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-bold quran-text text-xl">{s.name}</h3>
+                                    <p className="text-xs text-gray-400">{s.meaning} • {s.verses} آیه</p>
+                                </div>
+                                <Icon name="book" className="w-5 h-5 text-islamic-green opacity-30" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const AITeacher = () => {
+            const [isRecording, setIsRecording] = useState(false);
+            const [status, setStatus] = useState("آماده برای تحلیل");
+
+            const toggle = () => {
+                if (!isRecording) {
+                    setIsRecording(true);
+                    setStatus("در حال شنیدن...");
+                    setTimeout(() => {
+                        setIsRecording(false);
+                        setStatus("در حال تحلیل با هوش مصنوعی...");
+                        setTimeout(() => setStatus("عالی بود! تجوید شما صحیح است. (Gemini AI)"), 1500);
+                    }, 3000);
+                }
+            };
+
+            return (
+                <div className="p-6 flex flex-col items-center justify-center min-h-[70vh] animate-fade-in">
+                    <h1 className="text-xl font-bold mb-4">معلم هوشمند تجوید</h1>
+                    <p className="text-gray-400 text-center text-sm mb-12">آیه زیر را بخوانید تا هوش مصنوعی آن را تحلیل کند.</p>
+                    
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gold/20 mb-12 text-center w-full">
+                        <p className="quran-text text-3xl text-islamic-green leading-loose">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِیمِ</p>
+                    </div>
+
+                    <div className="mb-8 text-islamic-green font-bold text-center">
+                        {status}
+                    </div>
+
+                    <button 
+                        onClick={toggle}
+                        className={`w-24 h-24 rounded-full flex items-center justify-center shadow-2xl transition-all ${isRecording ? 'bg-red-500 scale-110' : 'bg-islamic-green'}`}
+                    >
+                        {isRecording ? (
+                            <div className="w-8 h-8 bg-white rounded-sm animate-pulse"></div>
+                        ) : (
+                            <Icon name="mic" className="w-10 h-10 text-white" />
+                        )}
+                    </button>
+                    
+                    <p className="mt-6 text-gray-400 text-xs">برای شروع ضبط دکمه را فشار دهید</p>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [page, setPage] = useState('home');
+
+            return (
+                <div className="app-container">
+                    {/* Header */}
+                    <div className="h-16 flex items-center justify-between px-6 border-b border-gray-50">
+                        <div className="text-islamic-green font-bold flex items-center">
+                             <div className="w-8 h-8 bg-islamic-green rounded-lg mr-2 flex items-center justify-center text-white ml-2">ق</div>
+                             آموزش قرآن کریم
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-gray-100"></div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 overflow-y-auto pb-24">
+                        {page === 'home' && <Dashboard onNavigate={setPage} />}
+                        {page === 'alphabet' && <Alphabet />}
+                        {page === 'quran' && <QuranViewer />}
+                        {page === 'ai' && <AITeacher />}
+                        {page === 'qaida' && (
+                            <div className="p-6 text-center text-gray-400 animate-fade-in">
+                                <h1 className="text-xl font-bold text-gray-800 mb-4">قاعده بغدادی</h1>
+                                <p>این بخش در نسخه اصلی فعال است.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Navbar */}
+                    <div className="fixed bottom-0 left-0 right-0 max-w-[450px] mx-auto bg-white/90 backdrop-blur-md border-t border-gray-100 h-20 flex justify-around items-center px-4">
+                        {[
+                            { id: 'home', label: 'خانه', icon: 'home' },
+                            { id: 'alphabet', label: 'الفبا', icon: 'alphabet' },
+                            { id: 'quran', label: 'مصحف', icon: 'book' },
+                            { id: 'ai', label: 'هوشمند', icon: 'mic' },
+                            { id: 'profile', label: 'پروفایل', icon: 'profile' }
+                        ].map(item => (
+                            <div 
+                                key={item.id} 
+                                onClick={() => setPage(item.id)}
+                                className={`flex flex-col items-center cursor-pointer transition-colors ${page === item.id ? 'text-islamic-green' : 'text-gray-300'}`}
+                            >
+                                <Icon name={item.icon} className="w-6 h-6 mb-1" />
+                                <span className="text-[10px]">{item.label}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

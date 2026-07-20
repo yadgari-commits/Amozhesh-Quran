@@ -20,6 +20,7 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
   List<QaidaLesson> _lessons = [];
   bool _isLoading = true;
   int _currentLessonIndex = 0;
+  int _selectedExampleIndex = 0;
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
     final currentLesson = _lessons[_currentLessonIndex];
     ref.read(progressProvider.notifier).completeQaidaLesson(currentLesson.id);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Lesson marked as completed!"), duration: Duration(seconds: 1)),
+      SnackBar(content: Text("completed".tr()), duration: const Duration(seconds: 1)),
     );
   }
 
@@ -62,6 +63,9 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
     }
 
     final currentLesson = _lessons[_currentLessonIndex];
+    final selectedExample = currentLesson.examples.isNotEmpty 
+        ? currentLesson.examples[_selectedExampleIndex < currentLesson.examples.length ? _selectedExampleIndex : 0]
+        : null;
 
     return Scaffold(
       appBar: AppBar(
@@ -72,13 +76,14 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
               onSelected: (index) {
                 setState(() {
                   _currentLessonIndex = index;
+                  _selectedExampleIndex = 0;
                 });
               },
               itemBuilder: (context) => List.generate(
                 _lessons.length,
                 (index) => PopupMenuItem(
                   value: index,
-                  child: Text("Lesson ${index + 1}: ${_lessons[index].title}"),
+                  child: Text("${"lesson".tr()} ${index + 1}: ${_lessons[index].title}"),
                 ),
               ),
               icon: const Icon(Icons.list),
@@ -91,7 +96,7 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Lesson ${currentLesson.id}: ${currentLesson.title}",
+              "${"lesson".tr()} ${currentLesson.id}: ${currentLesson.title}",
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.primaryGreen),
             ),
             const SizedBox(height: 12),
@@ -101,21 +106,17 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
             ),
             const SizedBox(height: 24),
             
-            // For now, keep the breakdown viewer as a highlighted example if it exists
-            // Or just show it for the first word of the lesson
-            if (currentLesson.examples.isNotEmpty)
+            if (selectedExample != null)
               WordBreakdownViewer(
-                fullWord: currentLesson.examples[0].word,
-                fullWordAudio: currentLesson.examples[0].audio,
-                units: [
-                  WordUnit(text: currentLesson.examples[0].word[0], audioPath: "temp.mp3"),
-                ],
+                fullWord: selectedExample.word,
+                fullWordAudio: selectedExample.audio,
+                units: selectedExample.units.map((u) => WordUnit(text: u.text, audioPath: u.audio)).toList(),
               ),
             
             const SizedBox(height: 24),
-            const Text(
-              "Practice Examples",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              "practice_examples".tr(),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             
@@ -130,7 +131,7 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
               ),
               itemCount: currentLesson.examples.length,
               itemBuilder: (context, index) {
-                return _buildExampleCard(currentLesson.examples[index].word);
+                return _buildExampleCard(index, currentLesson.examples[index].word);
               },
             ),
             
@@ -139,7 +140,7 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _markAsCompleted,
-                child: const Text("Mark as Completed"),
+                child: Text("mark_completed".tr()),
               ),
             ),
             const SizedBox(height: 12),
@@ -151,9 +152,10 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
                       onPressed: () {
                         setState(() {
                           _currentLessonIndex--;
+                          _selectedExampleIndex = 0;
                         });
                       },
-                      child: const Text("Previous"),
+                      child: Text("previous".tr()),
                     ),
                   ),
                 if (_currentLessonIndex > 0 && _currentLessonIndex < _lessons.length - 1)
@@ -164,9 +166,10 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
                       onPressed: () {
                         setState(() {
                           _currentLessonIndex++;
+                          _selectedExampleIndex = 0;
                         });
                       },
-                      child: const Text("Next Lesson"),
+                      child: Text("next_lesson".tr()),
                     ),
                   ),
               ],
@@ -177,25 +180,40 @@ class _QaidaLessonScreenState extends ConsumerState<QaidaLessonScreen> {
     );
   }
 
-  Widget _buildExampleCard(String word) {
+  Widget _buildExampleCard(int index, String word) {
+    final isSelected = _selectedExampleIndex == index;
     return Card(
-      elevation: 0,
-      color: AppColors.primaryGreen.withOpacity(0.05),
+      elevation: isSelected ? 4 : 0,
+      color: isSelected ? AppColors.primaryGold.withOpacity(0.1) : AppColors.primaryGreen.withOpacity(0.05),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: AppColors.primaryGreen.withOpacity(0.1)),
+        side: BorderSide(
+          color: isSelected ? AppColors.primaryGold : AppColors.primaryGreen.withOpacity(0.1),
+          width: isSelected ? 2 : 1,
+        ),
       ),
-      child: Center(
-        child: Text(
-          word,
-          style: const TextStyle(
-            fontSize: 28,
-            fontFamily: 'Amiri',
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryGreen,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            _selectedExampleIndex = index;
+          });
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Center(
+          child: Text(
+            word,
+            style: TextStyle(
+              fontSize: 28,
+              fontFamily: 'Amiri',
+              fontWeight: FontWeight.bold,
+              color: isSelected ? AppColors.primaryGold : AppColors.primaryGreen,
+            ),
           ),
         ),
       ),
+    );
+  }
+}
     );
   }
 }

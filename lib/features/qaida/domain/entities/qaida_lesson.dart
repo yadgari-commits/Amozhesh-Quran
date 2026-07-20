@@ -1,13 +1,35 @@
+class QaidaUnit {
+  final String text;
+  final String audio;
+
+  QaidaUnit({required this.text, required this.audio});
+
+  factory QaidaUnit.fromJson(Map<String, dynamic> json) {
+    return QaidaUnit(
+      text: json['text'] as String,
+      audio: json['audio'] as String,
+    );
+  }
+}
+
 class QaidaExample {
   final String word;
   final String audio;
+  final List<QaidaUnit> units;
 
-  QaidaExample({required this.word, required this.audio});
+  QaidaExample({
+    required this.word,
+    required this.audio,
+    this.units = const [],
+  });
 
   factory QaidaExample.fromJson(Map<String, dynamic> json) {
     return QaidaExample(
       word: json['word'] as String,
       audio: json['audio'] as String,
+      units: (json['units'] as List? ?? [])
+          .map((e) => QaidaUnit.fromJson(e))
+          .toList(),
     );
   }
 }

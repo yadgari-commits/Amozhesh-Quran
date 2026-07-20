@@ -119,7 +119,8 @@ class _SurahListScreenState extends ConsumerState<SurahListScreen> {
     );
   }
 }
-["الرَّحْمَٰنِ", "الرَّحِيمِ"]),
+
+"الرَّحْمَٰنِ", "الرَّحِيمِ"]),
                       Verse(number: 3, text: "مَالِكِ يَوْمِ الدِّينِ", words: ["مَالِكِ", "يَوْمِ", "الدِّينِ"]),
                     ],
                   ),

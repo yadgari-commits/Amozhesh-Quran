@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../data/services/quran_data_service.dart';
 import '../../../../data/models/quran_verse_model.dart';
@@ -57,7 +58,6 @@ class _SurahDetailScreenState extends ConsumerState<SurahDetailScreen> {
 
   Future<void> _playVerseAudio(int verseIndex) async {
     final verse = _verses[verseIndex];
-    // Construct the path for downloaded offline audio
     final audioPath = 'assets/audio/quran/${widget.surahNumber}/${verse.verse}.mp3';
     
     try {
@@ -65,7 +65,6 @@ class _SurahDetailScreenState extends ConsumerState<SurahDetailScreen> {
         _activeVerseIndex = verseIndex;
       });
 
-      // Update progress
       ref.read(progressProvider.notifier).saveLastRead(
         widget.surahNumber, 
         widget.surahName, 
@@ -78,7 +77,7 @@ class _SurahDetailScreenState extends ConsumerState<SurahDetailScreen> {
       debugPrint("Audio play error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("صوت این آیه هنوز دانلود نشده است."),
+          content: Text("Audio file not found offline."),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -158,7 +157,7 @@ class _SurahDetailScreenState extends ConsumerState<SurahDetailScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                "آیه ${verse.verse}",
+                                "${"ayah".tr()} ${verse.verse}",
                                 style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -173,6 +172,12 @@ class _SurahDetailScreenState extends ConsumerState<SurahDetailScreen> {
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+       ),
         ],
       ),
     );

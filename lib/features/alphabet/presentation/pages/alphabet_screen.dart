@@ -32,18 +32,39 @@ class AlphabetScreen extends StatelessWidget {
             ],
           ),
         ),
-        child: GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.85,
-          ),
-          itemCount: arabicAlphabet.length,
-          itemBuilder: (context, index) {
-            return LetterCard(letter: arabicAlphabet[index], index: index);
-          },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline, size: 20, color: AppColors.primaryGreen),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      "audio_instruction".tr(),
+                      style: TextStyle(fontSize: 14, color: Colors.grey.shade700, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 0.85,
+                ),
+                itemCount: arabicAlphabet.length,
+                itemBuilder: (context, index) {
+                  return LetterCard(letter: arabicAlphabet[index], index: index);
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

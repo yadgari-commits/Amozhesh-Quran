@@ -28,21 +28,21 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 32),
             _buildSettingTile(
               context,
-              title: "App Language",
+              title: "language".tr(),
               subtitle: _getLanguageName(context.locale.languageCode),
               icon: Icons.language,
               onTap: () => _showLanguageDialog(context),
             ),
             _buildSettingTile(
               context,
-              title: "Dark Mode",
+              title: "dark_mode".tr(),
               subtitle: "System Default",
               icon: Icons.dark_mode_outlined,
               onTap: () {},
             ),
             _buildSettingTile(
               context,
-              title: "Notifications",
+              title: "notifications".tr(),
               subtitle: "Daily Reminders",
               icon: Icons.notifications_none,
               onTap: () {},
@@ -53,9 +53,37 @@ class ProfileScreen extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade400),
                 onPressed: () {},
-                child: const Text("Log Out"),
+                child: Text("logout".tr()),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getLanguageName(String code) {
+    switch (code) {
+      case 'en': return 'English';
+      case 'ar': return 'العربية';
+      case 'fa': return 'دری';
+      case 'ps': return 'پشتو';
+      default: return code;
+    }
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("select_language".tr()),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _languageOption(context, "English", const Locale('en', 'US')),
+            _languageOption(context, "العربية", const Locale('ar', 'SA')),
+            _languageOption(context, "دری", const Locale('fa', 'AF')),
+            _languageOption(context, "پشتو", const Locale('ps', 'AF')),
           ],
         ),
       ),

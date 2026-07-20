@@ -9,8 +9,8 @@ import 'features/dashboard/presentation/pages/dashboard_screen.dart';
 import 'features/alphabet/presentation/pages/alphabet_screen.dart';
 import 'features/qaida/presentation/pages/qaida_lesson_screen.dart';
 import 'features/mushaf/presentation/pages/surah_list_screen.dart';
-import 'features/profile/presentation/pages/profile_screen.dart';
 import 'features/quiz/presentation/pages/quiz_list_screen.dart';
+import 'features/profile/presentation/pages/profile_screen.dart';
 import 'data/services/supabase_service.dart';
 
 void main() async {
@@ -22,7 +22,7 @@ void main() async {
     debugPrint("Warning: .env file not found");
   }
 
-  // Initialize Supabase
+  // Initialize Supabase (Optional)
   await SupabaseService().initialize();
 
   runApp(
@@ -91,6 +91,7 @@ class _MainNavigationState extends State<MainNavigation> {
       const QaidaLessonScreen(title: "Baghdadi Qaida"),
       const SurahListScreen(),
       const QuizListScreen(),
+      const ProfileScreen(),
     ];
 
     return Scaffold(
@@ -108,18 +109,13 @@ class _MainNavigationState extends State<MainNavigation> {
           NavigationDestination(icon: const Icon(Icons.menu_book), label: 'qaida'.tr()),
           NavigationDestination(icon: const Icon(Icons.auto_stories), label: 'quran'.tr()),
           NavigationDestination(icon: const Icon(Icons.quiz_outlined), label: 'quizzes'.tr()),
-        ],
-      ),
-    );
-  }
-}
-tr()),
           NavigationDestination(icon: const Icon(Icons.person_outline), label: 'profile'.tr()),
         ],
       ),
     );
   }
 }
+
 
 class DashboardScreen extends ConsumerWidget {
   final Function(int) onNavigate;
@@ -145,7 +141,7 @@ class DashboardScreen extends ConsumerWidget {
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const Text("Your progress is looking great. Keep going!"),
+            Text("dashboard_subtitle".tr()),
             const SizedBox(height: 24),
             // Progress Card
             Container(
@@ -187,7 +183,7 @@ class DashboardScreen extends ConsumerWidget {
             _buildLearningCard(
               context,
               title: "alphabet".tr(),
-              subtitle: "Learn the foundation of Arabic",
+              subtitle: "alphabet_subtitle".tr(),
               icon: Icons.sort_by_alpha,
               color: AppColors.primaryGreen.withOpacity(0.05),
               onTap: () => onNavigate(1),
@@ -195,7 +191,7 @@ class DashboardScreen extends ConsumerWidget {
             _buildLearningCard(
               context,
               title: "qaida".tr(),
-              subtitle: "Step-by-step reading rules",
+              subtitle: "qaida_subtitle".tr(),
               icon: Icons.menu_book,
               color: AppColors.primaryGold.withOpacity(0.05),
               onTap: () => onNavigate(2),
@@ -203,7 +199,7 @@ class DashboardScreen extends ConsumerWidget {
             _buildLearningCard(
               context,
               title: "quran".tr(),
-              subtitle: "Read and listen to Holy Quran",
+              subtitle: "quran_subtitle".tr(),
               icon: Icons.auto_stories,
               color: AppColors.primaryGreen.withOpacity(0.05),
               onTap: () => onNavigate(3),
@@ -211,7 +207,7 @@ class DashboardScreen extends ConsumerWidget {
             _buildLearningCard(
               context,
               title: "memorization".tr(),
-              subtitle: "Interactive Hifz tools",
+              subtitle: "memorization_subtitle".tr(),
               icon: Icons.favorite_border,
               color: Colors.pink.shade50,
               onTap: () => onNavigate(4),
@@ -266,6 +262,15 @@ class DashboardScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+ ),
+      ),
+    );
+  }
+}
+     ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/theme/app_theme.dart';
 
 class WordUnit {
@@ -158,9 +159,11 @@ class _WordBreakdownViewerState extends State<WordBreakdownViewer> {
               children: [
                 const Icon(Icons.info_outline, size: 16, color: Colors.grey),
                 const SizedBox(width: 8),
-                Text(
-                  "برای شنیدن تلفظ روی واحدها یا کل کلمه بزنید.",
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontStyle: FontStyle.italic),
+                Expanded(
+                  child: Text(
+                    "audio_instruction".tr(),
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontStyle: FontStyle.italic),
+                  ),
                 ),
               ],
             ),
